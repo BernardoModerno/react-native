@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from 'react-native';
 import { User } from '../types';
 import UserDetail from './UserDetail';
+import { constants} from "../constants"
 
 function UserList() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -10,7 +11,7 @@ function UserList() {
     <View>
       <Text style={styles.h1}>User List</Text>
       <View style={styles.container}>
-  
+        
       </View>
 
       {selectedUser && <UserDetail selectedUser={selectedUser} />}

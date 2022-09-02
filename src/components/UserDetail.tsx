@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, Image, Button, StyleSheet } from "react-native";
 import { User } from "../types";
+import { constants} from "../constants"
 
 
 interface UserDetailProps {
@@ -10,27 +11,51 @@ interface UserDetailProps {
 
 
 function UserDetail({ selectedUser }: UserDetailProps) {
+
+  const [user, setUser] = useState([]);
+  const [userSelect, setUserSelect] = useState([]);
+
+  useEffect(()=> {
+    async function loadUsers(){
+      const response = await constants.get('/users')
+      
+      // setUser(response.data.data);
+      setUserSelect(response.data.data);
+
+    }
+
+    loadUsers();
+  }, [])
+
+  
   return (
     <View>
       <Text style={styles.h2}>User Detail</Text>
+      {userSelect.map((usuario) => (
       <View style={styles.content}>
+      
         <View>
-          <Text style={styles.row}>
-            <Text style={styles.bold}>Name:</Text> {selectedUser.first_name}
+        
+          <Text style={styles.row} key={usuario.id}>
+            <Text style={styles.bold}>Name:</Text> 
+            <Text>{usuario.first_name}</Text> 
           </Text>
           <Text style={styles.row}>
             <Text style={styles.bold}>Last Name:</Text>
-            {selectedUser.last_name}
+            {usuario.last_name}
           </Text>
           <Text style={styles.row}>
             <Text style={styles.bold}>Email:</Text>
-            {selectedUser.email}
+            {usuario.email}
           </Text>
         </View>
         <View>
-          <Image source={{ uri: selectedUser.avatar}} style={styles.avatar} />
+          <Image source={{ uri: usuario.avatar}} style={styles.avatar} />
+       
         </View>
+      
       </View>
+      ))}
       <Button title="Close" />
     </View>
   );
